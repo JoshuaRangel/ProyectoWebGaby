@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestión de Materiales Didácticos</title>
+    <link rel="stylesheet" type="text/css" href="../../Comun/CSS/headerNavFooter.css">
+    <link rel="stylesheet" type="text/css" href="../../Comun/CSS/paletaProfesor.css">
+    <style>
+        
+        #contenedor-principal {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .seccion-gestion {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        #lista-temas {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        #lista-archivos {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+
+        .archivo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #eee;
+            margin-bottom: 8px;
+            border-radius: 4px;
+        }
+
+        .boton-accion {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .boton-ver {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .boton-ver:hover {
+            background-color: #45a049;
+        }
+
+        .boton-eliminar {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .boton-eliminar:hover {
+            background-color: #d32f2f;
+        }
+
+        .boton-subir {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .boton-subir:hover {
+            background-color: #0b7dda;
+        }
+
+        #subir-archivo {
+            display: none;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 20px;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        #mensaje-subida {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        #visor-pdf {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ddd;
+            display: none;
+            margin-top: 15px;
+        }
+
+        #nuevo-tema-form {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        #nuevo-tema-form input {
+            padding: 8px;
+            width: 70%;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img src="../../Comun/Multimedia/Imagenes/logo.png" id="logo">
+    <h1>Apoyo a la educación primaria</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="../index.html">Principal</a></li>
+        <li>
+            <a href="#">Perfil</a>
+            <ul>
+                <li><a href="#">Consultar datos</a></li>
+                <li><a href="#">Editar datos</a></li>    
+                <li><a href="#">Ver grupo</a></li>
+                <li><a href="#">Recuperar contraseña</a></li>
+                <li><a href="#">Cerrar sesión</a></li>
+            </ul>
+        </li>
+        <li class="activa"><a href="gestion_materiales.html">Añadir recursos</a></li>
+        <li><a href="#">Calificaciones</a></li>
+        <li>
+            <a href="#">Ayuda</a>
+            <ul>
+                <li><a href="#">Manual de usuario</a></li>
+                <li><a href="#">Busqueda</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<div id="layout">
+    <div id="principal">
+        <div id="contenido">
+            <div id="user-info">
+                Bienvenido, <span id="username-display"></span> 
+                (<span id="tipo-usuario-display"></span>)
+                <button onclick="cerrarSesion()">Cerrar sesión</button>
+            </div>
+            
+            <div id="contenedor-principal">
+                <h2>Gestión de Materiales Didácticos</h2>
+                
+                <!-- Sección de gestión de temas -->
+                <div class="seccion-gestion">
+                    <h3>1. Seleccione o cree un tema</h3>
+                    <select id="lista-temas">
+                        <option value="">-- Seleccione un tema --</option>
+                    </select>
+                    <button id="btn-nuevo-tema" class="boton-accion boton-subir">+ Nuevo Tema</button>
+                    <div id="nuevo-tema-form">
+                        <input type="text" id="nombre-tema" placeholder="Nombre del tema">
+                        <button id="btn-guardar-tema" class="boton-accion boton-ver">Guardar</button>
+                        <button id="btn-cancelar-tema" class="boton-accion boton-eliminar">Cancelar</button>
+                    </div>
+                </div>
+                
+                <!-- Sección de materiales -->
+                <div class="seccion-gestion">
+                    <h3>2. Materiales disponibles</h3>
+                    <div id="lista-archivos">
+                        <p>Seleccione un tema para ver sus materiales</p>
+                    </div>
+                </div>
+                
+                <!-- Sección para subir archivos -->
+                <div class="seccion-gestion">
+                    <h3>3. Agregar nuevo material</h3>
+                    <input type="file" id="subir-archivo" accept=".pdf">
+                    <button id="btn-subir" class="boton-accion boton-subir">Seleccionar PDF</button>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="barra-progreso"></div>
+                    </div>
+                    <div id="mensaje-subida"></div>
+                </div>
+                
+                <!-- Visor de PDF -->
+                <div class="seccion-gestion">
+                    <h3>4. Visualizador</h3>
+                    <iframe id="visor-pdf"></iframe>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            copyright by Equipo1
+        </div>
+    </div>
+</div>
+
+<script src="../../Comun/Javascript/session.js"></script>
+<script src="gestion_materiales.js"></script>
+</body>
+</html>
